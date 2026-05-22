@@ -7,8 +7,9 @@ pub fn system_menu_input(world: &mut World) {
     let key_down = is_key_pressed(KeyCode::Down);
     let key_up = is_key_pressed(KeyCode::Up);
     let key_confirm = is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::Space);
+    let just_pressed = is_mouse_button_pressed(MouseButton::Left);
 
-    if !key_down && !key_up && !key_confirm {
+    if !key_down && !key_up && !key_confirm && !just_pressed {
         return;
     }
 
@@ -38,7 +39,7 @@ pub fn system_menu_input(world: &mut World) {
         world.insert(new_entity, (MenuSelected,)).ok();
     }
 
-    if key_confirm {
+    if key_confirm || just_pressed{
         let action = &items[new_pos].3;
         let next = match action {
             MenuAction::StartLevel(n) => SceneKind::Level(*n),

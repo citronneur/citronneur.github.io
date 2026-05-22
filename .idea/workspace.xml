@@ -8,16 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e99a1f99-7568-4c9a-b8d6-7818b5eb577b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/asteroid.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/spaceship_sprite.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/components.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scene.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/scene.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/systems/logic.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/logic.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/menu_input.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/menu_input.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/systems/orientation.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/orientation.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/systems/render.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/render.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/systems/sprite_render.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/sprite_render.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +42,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Cargo.Run hello_ecs.executor": "Run",
+    "Cargo.Run hello_ecs.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "main",
@@ -122,7 +116,7 @@
       <updated>1778606956184</updated>
       <workItem from="1778606957483" duration="42055000" />
       <workItem from="1779107539943" duration="2511000" />
-      <workItem from="1779175731031" duration="51665000" />
+      <workItem from="1779175731031" duration="54046000" />
     </task>
     <servers />
   </component>
@@ -136,6 +130,11 @@
           <url>file://$PROJECT_DIR$/src/systems/sprite_render.rs</url>
           <line>63</line>
           <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/systems/menu_input.rs</url>
+          <line>41</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
