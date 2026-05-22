@@ -1,3 +1,0 @@
-[alias]
-# cargo build-js  →  release WASM then copy artefacts to js/
-build-web = "build --target wasm32-unknown-unknown --release"
