@@ -105,7 +105,7 @@ fn spawn_level(world: &mut World, level: u32) {
             GameObject::Asteroid,
             Geometry::Circle(radius / sh),
             Weight { weight: 1.0 },
-            Sprite { sheet_name: "asteroid".to_string(), scale: 0.00008 },
+            Sprite { sheet_name: "asteroid".to_string(), scale: 0.00006 },
             Transformation {default: Mat2::from_angle(PI/2.0f32), transformation: Mat2::IDENTITY},
             CollideTag { other: None },
             SceneTag,
