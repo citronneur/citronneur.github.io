@@ -8,8 +8,6 @@ use crate::assets::{draw_sprite, AssetManager};
 use crate::components::{PhysicsClock, Position, Sprite, Transformation};
 
 pub fn system_sprite_render(world: &World, assets: &AssetManager) {
-    let sh = screen_height();
-
     let global = if let Some((_, clock)) = world.query::<&mut PhysicsClock>().into_iter().next() {
         clock.global
     }
@@ -22,10 +20,10 @@ pub fn system_sprite_render(world: &World, assets: &AssetManager) {
     for (_, (pos, sprite, tf)) in world.query::<(&Position, &Sprite, &Transformation)>().iter() {
         if let Some(sheet) = assets.get_sheet(&sprite.sheet_name) {
             let src = sheet.frame_rect((global * 8.0) as usize  % sheet.cols);
-            let cx = pos.x * sh;
-            let cy = pos.y * sh;
-            let hw = src.w * sh * sprite.scale * 0.5;
-            let hh = src.h * sh * sprite.scale * 0.5;
+            let cx = pos.x;
+            let cy = pos.y;
+            let hw = src.w * sprite.scale * 0.5;
+            let hh = src.h * sprite.scale * 0.5;
 
             let tw = sheet.texture.width();
             let th = sheet.texture.height();
@@ -61,7 +59,7 @@ pub fn system_sprite_render(world: &World, assets: &AssetManager) {
     for (_, (pos, sprite)) in world.query::<(&Position, &Sprite)>().without::<&Transformation>().iter() {
         if let Some(sheet) = assets.get_sheet(&sprite.sheet_name) {
             let src = sheet.frame_rect((global * 8.0) as usize  % sheet.cols);
-            draw_sprite(&sheet.texture, src, pos.x * sh, pos.y * sh, sprite.scale);
+            draw_sprite(&sheet.texture, src, pos.x, pos.y, sprite.scale);
         }
     }
 }

@@ -30,6 +30,7 @@ const FRAGMENT_SHADER: &str = r#"#version 100
 precision highp float;
 uniform vec2 iResolution;
 uniform float iTime;
+uniform float density;
 uniform vec3 bh_0;
 uniform vec3 bh_1;
 uniform vec3 bh_2;
@@ -86,7 +87,7 @@ vec2 apply_blackhole(vec2 coord, vec3 bh) {
     float angle = 1. / log2(from_bh/bh.z + 1.0) - 1.05;
 
     if (angle > 0.0)
-        coord = rotateUV(coord, 2.*angle, bh.xy);
+        coord = rotateUV(coord, 3.*angle, bh.xy);
 
     vec2 dir = coord - bh.xy;
     float factor = (exp((from_bh-bh.z)/0.005)) + bh.z;
@@ -101,52 +102,53 @@ void main()
     float resolution = iResolution.y;
     vec2 coord = gl_FragCoord.xy / resolution;
     bool in_bh = false;
+    float black_factor = 0.08;
 
     if (bh_0.z > 0.0) {
         coord = apply_blackhole(coord, bh_0);
-        if (distance(coord, bh_0.xy) < 0.1 * bh_0.z)
+        if (distance(coord, bh_0.xy) < black_factor * bh_0.z)
             in_bh = true;
     }
 
     if (bh_1.z > 0.0) {
         coord = apply_blackhole(coord, bh_1);
-        if (distance(coord, bh_1.xy) < 0.1 * bh_1.z)
+        if (distance(coord, bh_1.xy) < black_factor * bh_1.z)
             in_bh = true;
     }
 
     if (bh_2.z > 0.0) {
         coord = apply_blackhole(coord, bh_2);
-        if (distance(coord, bh_2.xy) < 0.1 * bh_2.z)
+        if (distance(coord, bh_2.xy) < black_factor * bh_2.z)
             in_bh = true;
     }
 
     if (bh_3.z > 0.0) {
         coord = apply_blackhole(coord, bh_3);
-        if (distance(coord, bh_3.xy) < 0.1 * bh_3.z)
+        if (distance(coord, bh_3.xy) < black_factor * bh_3.z)
             in_bh = true;
     }
 
     if (bh_4.z > 0.0) {
         coord = apply_blackhole(coord, bh_4);
-        if (distance(coord, bh_4.xy) < 0.1 * bh_4.z)
+        if (distance(coord, bh_4.xy) < black_factor * bh_4.z)
             in_bh = true;
     }
 
     if (bh_5.z > 0.0) {
         coord = apply_blackhole(coord, bh_5);
-        if (distance(coord, bh_5.xy) < 0.1 * bh_5.z)
+        if (distance(coord, bh_5.xy) < black_factor * bh_5.z)
             in_bh = true;
     }
 
     if (bh_6.z > 0.0) {
         coord = apply_blackhole(coord, bh_6);
-        if (distance(coord, bh_6.xy) < 0.1 * bh_6.z)
+        if (distance(coord, bh_6.xy) < black_factor * bh_6.z)
             in_bh = true;
     }
 
     if (bh_7.z > 0.0) {
         coord = apply_blackhole(coord, bh_7);
-        if (distance(coord, bh_7.xy) < 0.1 * bh_7.z)
+        if (distance(coord, bh_7.xy) < black_factor * bh_7.z)
             in_bh = true;
     }
 
@@ -155,9 +157,9 @@ void main()
 
     vec3 result = vec3(0.);
     if (!in_bh) {
-        result += stars(coord, 24., 0.1, 2.) * vec3(.74, .74, .74);
-        result += stars(coord, 68., 0.05, 1.) * vec3(.97, .74, .74);
-        result += stars(coord, 106., 0.025, 0.5) * vec3(.9, .9, .95);
+        result += stars(coord, density * resolution, 100.0 / resolution, 2.) * vec3(.74, .74, .74);
+        result += stars(coord, density * 3.0 * resolution, 50.0 / resolution, 1.) * vec3(.97, .74, .74);
+        result += stars(coord, density * 6.0 * resolution, 25.0 / resolution, 0.5) * vec3(.9, .9, .95);
     }
 
     gl_FragColor = vec4(result, 1.);
@@ -177,6 +179,7 @@ impl BlackHoleRenderer {
                     UniformDesc::new("iResolution", UniformType::Float2),
                     UniformDesc::new("iTime", UniformType::Float1),
                     UniformDesc::new("bh_count",   UniformType::Float1),
+                    UniformDesc::new("density",   UniformType::Float1),
                     UniformDesc::new("bh_0",    UniformType::Float3),
                     UniformDesc::new("bh_1",    UniformType::Float3),
                     UniformDesc::new("bh_2",    UniformType::Float3),
@@ -226,11 +229,12 @@ pub fn system_render(world: &World, bh_renderer: &mut Option<BlackHoleRenderer>)
 
     renderer.material.set_uniform("iResolution", vec2(sw, sh));
     renderer.material.set_uniform("bh_count", bh_data.len() as f32);
+    renderer.material.set_uniform("density", 0.024f32);
 
     for i in 0..MAX_BH {
         if i < bh_data.len() {
             let (x, y, r) = bh_data[i];
-            renderer.material.set_uniform(uv_names[i],  vec3(x, 1.0f32 - y, r/100.0));
+            renderer.material.set_uniform(uv_names[i],  vec3(x / sh, 1.0f32 - y / sh, r * 2.0 / sh));
         } else {
             renderer.material.set_uniform(uv_names[i],  vec3(-1.0f32, -1.0f32, 0.0f32));
         }
@@ -242,15 +246,15 @@ pub fn system_render(world: &World, bh_renderer: &mut Option<BlackHoleRenderer>)
     gl_use_default_material();
 
     // Draw scene directly onto the screen.
-    for (_, (pos, geo, obj)) in world.query::<(&Position, &Geometry, &GameObject)>().iter() {
+    /*for (_, (pos, geo, obj)) in world.query::<(&Position, &Geometry, &GameObject)>().iter() {
         match (geo, obj) {
             (Geometry::Circle(r), GameObject::Asteroid) => {
-                draw_circle(pos.x * sh, pos.y * sh, *r, WHITE);
-                draw_circle_lines(pos.x * sh, pos.y * sh, *r, 2.0, WHITE);
+                draw_circle(pos.x, pos.y, *r, WHITE);
+                draw_circle_lines(pos.x, pos.y, *r, 2.0, WHITE);
             }
             _ => () //debug!("Unable to render object"),
         }
-    }
+    }*/
     for (_, (pos, label)) in world.query::<(&Position, &Label)>().iter() {
         draw_text(&label.0, pos.x, pos.y, 24.0, WHITE);
     }
