@@ -10,15 +10,14 @@ pub fn system_debug(world: & World) {
         }
     }
 
-    let sh = screen_height();
     for (entity, (pos, geo)) in world.query::<(&Position, &Geometry)>().iter() {
         match geo {
             Geometry::Circle(r) => {
-                draw_circle_lines(pos.x * sh, pos.y * sh, *r * sh, 1.0, GREEN);
+                draw_circle_lines(pos.x, pos.y , *r, 1.0, GREEN);
                 draw_text(
                     &format!("{:?} r={:.1}", entity, r),
-                    pos.x * sh + r + 4.0,
-                    pos.y * sh + 4.0,
+                    pos.x + r + 4.0,
+                    pos.y + 4.0,
                     14.0,
                     GREEN,
                 );

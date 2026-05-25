@@ -73,7 +73,9 @@ fn spawn_menu(world: &mut World) {
 }
 
 fn spawn_level(world: &mut World, level: u32) {
+    let sw = screen_width();
     let sh = screen_height();
+    let offset = ((sw - 1024.0)/2.0, (sh - 460.4) / 2.0);
     let balls: &[(f32, f32, f32, f32, f32, Color)] = match level {
         1 => &[
             (200.0, 200.0,  150.0,   80.0, 3.0, RED),
@@ -100,12 +102,12 @@ fn spawn_level(world: &mut World, level: u32) {
 
     for &(x, y, _dx, _dy, radius, color) in balls {
         world.spawn((
-            Position { x  : x / sh, y : y / sh},
+            Position { x : x + offset.0, y : y + offset.1},
             Velocity { dx: 0.0, dy: 0.0 },
             GameObject::Asteroid,
-            Geometry::Circle(radius / sh),
-            Weight { weight: 1.0 },
-            Sprite { sheet_name: "asteroid".to_string(), scale: 0.00006 },
+            Geometry::Circle(radius),
+            Weight { weight: 2.0 },
+            Sprite { sheet_name: "asteroid".to_string(), scale: 0.02 },
             Transformation {default: Mat2::from_angle(PI/2.0f32), transformation: Mat2::IDENTITY},
             CollideTag { other: None },
             SceneTag,
@@ -114,12 +116,12 @@ fn spawn_level(world: &mut World, level: u32) {
 
     //spawn Airship
     world.spawn((
-        Position { x: 0.01, y: 0.01},
-        Velocity { dx: 0.01, dy: 0.01 },
+        Position { x: 0.0 + offset.0 , y: 0.0 + offset.1},
+        Velocity { dx: 2.0, dy: 1.0 },
         GameObject::Airship,
-        Geometry::Circle(1.0 / sh),
+        Geometry::Circle(1.0),
         Weight { weight: 1.0 },
-        Sprite { sheet_name: "spaceship".to_string(), scale: 0.00012 },
+        Sprite { sheet_name: "spaceship".to_string(), scale: 0.06 },
         CollideTag{ other: None },
         Transformation {default: Mat2::from_angle(PI/2.0f32), transformation: Mat2::IDENTITY},
         SceneTag,
@@ -127,9 +129,9 @@ fn spawn_level(world: &mut World, level: u32) {
 
     //spawn Target
     world.spawn((
-        Position { x: 1.3, y: 0.9},
+        Position { x: 500.0 + offset.0, y: 500.0 + offset.1},
         GameObject::Target,
-        Geometry::Circle(100.0 / sh),
+        Geometry::Circle(100.0),
         Sprite { sheet_name: "player".to_string(), scale: 0.5 },
         Weight { weight: 0.0 },
         CollideTag{ other: None },
