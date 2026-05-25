@@ -12,7 +12,17 @@ use scene::{spawn_scene, SceneKind, SceneManager};
 use systems::render::BlackHoleRenderer;
 use systems::scene::system_scene;
 
-#[macroquad::main("GravityTouch")]
+fn window_conf() -> macroquad::window::Conf {
+    macroquad::window::Conf {
+        window_title: "GravityTouch".to_string(),
+        window_width: 1024,
+        window_height: 460,
+        window_resizable: false,
+        ..Default::default()
+    }
+}
+
+#[macroquad::main(window_conf)]
 async fn main() {
     let mut assets = AssetManager::new();
     assets.load("spaceship", "assets/spaceship_sprite.png").await.expect("assets/spaceship_sprite.png");
