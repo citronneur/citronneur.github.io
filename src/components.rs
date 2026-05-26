@@ -75,7 +75,8 @@ impl Default for Transformation {
 #[derive(Clone)]
 pub enum LevelState {
     Running,
-    Translating
+    Translating,
+    Spawn(u32)
 }
 
 #[derive(Clone)]
