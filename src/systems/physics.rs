@@ -1,12 +1,12 @@
-use hecs::{Entity, World};
-use macroquad::prelude::{screen_height, screen_width};
+use hecs::{World};
 
 use crate::components::{Position, Velocity, Weight};
 
-const G: f32 = 3000.0;  // gravitational constant in game units
-const R_MIN: f32 = 15.0; // softening distance to avoid singularity at r → 0
+const G: f32 = 10000.0;  // gravitational constant in game units
+const R_MIN: f32 = 30.0; // softening distance to avoid singularity at r → 0
 
 pub fn system_physics(world: &mut World, dt: f32) {
+
     // Collect attractor state before taking mutable borrows on the world.
     let attractors: Vec<(f32, f32, f32)> = world
         .query::<(&Position, &Weight)>()
@@ -28,4 +28,5 @@ pub fn system_physics(world: &mut World, dt: f32) {
         pos.x += vel.dx * dt;
         pos.y += vel.dy * dt;
     }
+
 }

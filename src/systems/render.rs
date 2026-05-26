@@ -99,7 +99,7 @@ vec2 apply_blackhole(vec2 coord, vec3 bh) {
 
 void main()
 {
-    float resolution = iResolution.y;
+    float resolution = iResolution.x;
     vec2 coord = gl_FragCoord.xy / resolution;
     bool in_bh = false;
     float black_factor = 0.08;
@@ -157,9 +157,9 @@ void main()
 
     vec3 result = vec3(0.);
     if (!in_bh) {
-        result += stars(coord, density * resolution, 100.0 / resolution, 2.) * vec3(.74, .74, .74);
-        result += stars(coord, density * 3.0 * resolution, 50.0 / resolution, 1.) * vec3(.97, .74, .74);
-        result += stars(coord, density * 6.0 * resolution, 25.0 / resolution, 0.5) * vec3(.9, .9, .95);
+        result += stars(coord, density, 100.0 / resolution, 2.) * vec3(.74, .74, .74);
+        result += stars(coord, density * 3.0, 50.0 / resolution, 1.) * vec3(.97, .74, .74);
+        result += stars(coord, density * 6.0, 25.0 / resolution, 0.5) * vec3(.9, .9, .95);
     }
 
     gl_FragColor = vec4(result, 1.);
@@ -199,7 +199,7 @@ impl BlackHoleRenderer {
     }
 }
 
-pub fn system_render(world: &World, bh_renderer: &mut Option<BlackHoleRenderer>) {
+pub fn system_render(world: &World, bh_renderer: &mut Option<BlackHoleRenderer>, density: f32) {
     let sw = screen_width();
     let sh = screen_height();
 
@@ -229,12 +229,12 @@ pub fn system_render(world: &World, bh_renderer: &mut Option<BlackHoleRenderer>)
 
     renderer.material.set_uniform("iResolution", vec2(sw, sh));
     renderer.material.set_uniform("bh_count", bh_data.len() as f32);
-    renderer.material.set_uniform("density", 0.024f32);
+    renderer.material.set_uniform("density", density);
 
     for i in 0..MAX_BH {
         if i < bh_data.len() {
             let (x, y, r) = bh_data[i];
-            renderer.material.set_uniform(uv_names[i],  vec3(x / sh, 1.0f32 - y / sh, r * 2.0 / sh));
+            renderer.material.set_uniform(uv_names[i],  vec3(x / sw, (sh - y) / sw, r * 2.0 / sw));
         } else {
             renderer.material.set_uniform(uv_names[i],  vec3(-1.0f32, -1.0f32, 0.0f32));
         }

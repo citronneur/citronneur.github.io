@@ -44,6 +44,7 @@ pub struct CollideTag {
 pub struct PhysicsClock {
     pub global: f32,
     pub accumulator: f32,
+    pub steps: u32
 }
 
 pub struct Label(pub String);
@@ -70,3 +71,17 @@ impl Default for Transformation {
         Self { default: Mat2::IDENTITY, transformation: Mat2::IDENTITY }
     }
 }
+
+#[derive(Clone)]
+pub enum LevelState {
+    Running,
+    Translating
+}
+
+#[derive(Clone)]
+pub struct LevelManager {
+    pub state : LevelState,
+    pub density: f32
+}
+
+pub struct SpacecraftTag;

@@ -42,7 +42,7 @@ pub fn system_menu_input(world: &mut World) {
     if key_confirm || just_pressed{
         let action = &items[new_pos].3;
         let next = match action {
-            MenuAction::StartLevel(n) => SceneKind::Level(*n),
+            MenuAction::StartLevel(n) => SceneKind::Level,
             MenuAction::Quit => SceneKind::Quit,
         };
         let q = world.query_mut::<&mut SceneManager>();

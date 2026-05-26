@@ -15,8 +15,8 @@ use systems::scene::system_scene;
 fn window_conf() -> macroquad::window::Conf {
     macroquad::window::Conf {
         window_title: "GravityTouch".to_string(),
-        window_width: 1024,
-        window_height: 460,
+        window_width: 2048,
+        window_height: 920,
         window_resizable: false,
         ..Default::default()
     }

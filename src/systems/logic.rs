@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use hecs::{Entity, World};
 use macroquad::color::Color;
-use crate::components::{CollideTag, GameObject, Geometry, Position, Velocity, Weight};
+use crate::components::{CollideTag, GameObject, Geometry, LevelManager, LevelState, Position, Velocity, Weight};
 use crate::scene::{SceneKind, SceneManager, SceneTag};
 
 // Base on collision system result we will update the logic of the game
@@ -64,17 +64,13 @@ pub fn system_logic(world: &mut World) {
     }
 
     if is_next_level {
-        let q = world.query_mut::<&mut SceneManager>();
+        let q = world.query_mut::<&mut LevelManager>();
         if let Some((_, mgr)) = q.into_iter().next() {
-            if let SceneKind::Level(n) = mgr.current {
+            mgr.state = LevelState::Translating;
+            /*if let SceneKind::Level(n) = mgr.current {
                 mgr.next = Some(SceneKind::Level(n+1));
-            }
+            }*/
         }
-    }
-
-    // clean useless entity
-    for entity in consumed {
-        world.despawn(entity).ok();
     }
 
     // spawn new entity
