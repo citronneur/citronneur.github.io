@@ -75,7 +75,7 @@ fn spawn_menu(world: &mut World) {
 fn spawn_level(world: &mut World) {
     let sw = screen_width();
     let sh = screen_height();
-    let offset = ((sw - 2048.0)/2.0, (sh - 960.0) / 2.0);
+    let offset = ((sw - 1024.0)/2.0, (sh - 460.0) / 2.0);
     let balls: &[(f32, f32, f32, f32, f32, Color)] = &[
         (200.0, 200.0,  150.0,   80.0, 3.0, RED),
         (400.0, 300.0, -120.0,  100.0, 2.0, GREEN),
@@ -104,7 +104,7 @@ fn spawn_level(world: &mut World) {
 
     //spawn spacecraft
    world.spawn((
-        Position { x: 0.0 + offset.0 , y: 460.0 + offset.1},
+        Position { x: 10.0 + offset.0 , y: 230.0 + offset.1},
         Velocity { dx: 140.0, dy: 0.0 },
         GameObject::Airship,
         Geometry::Circle(1.0),
@@ -118,7 +118,7 @@ fn spawn_level(world: &mut World) {
 
     //spawn Target
     world.spawn((
-        Position { x: 1800.0 + offset.0, y: 460.0 + offset.1},
+        Position { x: 990.0 + offset.0, y: 230.0 + offset.1},
         GameObject::Target,
         Geometry::Circle(100.0),
         Sprite { sheet_name: "player".to_string(), scale: 0.5 },
