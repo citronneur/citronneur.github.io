@@ -8,8 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e99a1f99-7568-4c9a-b8d6-7818b5eb577b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/systems/despawn.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/systems/time.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/components.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scene.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/scene.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/blackhole.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/blackhole.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/level.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/level.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/physics.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/physics.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/render.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/render.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,6 +130,17 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -130,9 +150,9 @@
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/systems/menu_input.rs</url>
-          <line>41</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/src/systems/level.rs</url>
+          <line>90</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -3,9 +3,15 @@ use std::collections::{HashMap, HashSet};
 use hecs::{Entity, World};
 use macroquad::prelude::Color;
 
-use crate::components::{CollideTag, Geometry, Position};
+use crate::components::{CollideTag, GameObject, Geometry, Position, Velocity};
 
 pub fn system_collide(world: &mut World) {
+
+    // clear collision
+    for (_, (col)) in world.query_mut::<(&mut CollideTag)>() {
+        col.other = None;
+    }
+
     let objects: Vec<(Entity, Position, Geometry)> = world
         .query::<(&Position, &Geometry, &CollideTag)>()// only collision entity
         .iter()

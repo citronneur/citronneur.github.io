@@ -24,4 +24,9 @@ pub fn system_debug(world: & World) {
             }
         }
     }
+
+    // HUD
+    let fps = get_fps();
+    draw_text(&format!("FPS: {fps}"), 10.0, 20.0, 20.0, GRAY);
+    draw_text("ESC \u{2013} back to menu", 10.0, 68.0, 20.0, GRAY);
 }

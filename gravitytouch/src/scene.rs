@@ -2,12 +2,12 @@ use std::f32::consts::PI;
 use hecs::World;
 use macroquad::prelude::*;
 
-use crate::components::{CollideTag, DebugTag, GameObject, Geometry, PhysicsClock, Position, Sprite, Transformation, Velocity, Weight};
+use crate::components::{CollideTag, DebugTag, GameObject, Geometry, LevelManager, LevelState, PhysicsClock, Position, SpacecraftTag, Sprite, Transformation, Velocity, Weight};
 
 #[derive(Clone)]
 pub enum SceneKind {
     StartMenu,
-    Level(u32),
+    Level,
     Quit,
 }
 
@@ -43,7 +43,7 @@ pub struct MenuSelected;
 pub fn spawn_scene(world: &mut World, kind: &SceneKind) {
     match kind {
         SceneKind::StartMenu => spawn_menu(world),
-        SceneKind::Level(n) => spawn_level(world, *n),
+        SceneKind::Level => spawn_level(world),
         SceneKind::Quit => {}
     }
 }
@@ -72,33 +72,21 @@ fn spawn_menu(world: &mut World) {
     }
 }
 
-fn spawn_level(world: &mut World, level: u32) {
+fn spawn_level(world: &mut World) {
     let sw = screen_width();
     let sh = screen_height();
-    let offset = ((sw - 1024.0)/2.0, (sh - 460.4) / 2.0);
-    let balls: &[(f32, f32, f32, f32, f32, Color)] = match level {
-        1 => &[
-            (200.0, 200.0,  150.0,   80.0, 3.0, RED),
-            (400.0, 300.0, -120.0,  100.0, 2.0, GREEN),
-            //(600.0, 150.0,   90.0, -130.0, 1.0, BLUE),
-            //(300.0, 400.0,  -70.0,  -90.0, 2.0, YELLOW),
-            //(500.0, 250.0,  110.0,   60.0, 2.0, PURPLE),
-        ],
-        2 => &[
-            (150.0,  80.0,  220.0,   50.0, 2.0, RED),
-            (350.0, 120.0, -180.0,   60.0, 1.0, ORANGE),
-            (550.0,  80.0,  140.0,  -80.0, 1.0, YELLOW),
-            (250.0, 150.0, -200.0,   40.0, 1.0, GREEN),
-            (450.0,  90.0,  160.0,   90.0, 2.0, BLUE),
-            (650.0, 130.0, -150.0,  -70.0, 1.0, PURPLE),
-            (100.0, 200.0,  250.0,   30.0, 1.0, PINK),
-            (700.0, 180.0, -220.0,   50.0, 1.0, WHITE),
-        ],
-        _ => &[],
-    };
+    let offset = ((sw - 2048.0)/2.0, (sh - 960.0) / 2.0);
+    let balls: &[(f32, f32, f32, f32, f32, Color)] = &[
+        (200.0, 200.0,  150.0,   80.0, 3.0, RED),
+        (400.0, 300.0, -120.0,  100.0, 2.0, GREEN),
+        //(600.0, 150.0,   90.0, -130.0, 1.0, BLUE),
+        //(300.0, 400.0,  -70.0,  -90.0, 2.0, YELLOW),
+        //(500.0, 250.0,  110.0,   60.0, 2.0, PURPLE),
+    ];
+
 
     // Singleton: drives the fixed physics timestep for this level.
-    world.spawn((PhysicsClock { global: 0.0, accumulator: 0.0 }, SceneTag));
+    world.spawn((PhysicsClock { global: 0.0, accumulator: 0.0, steps : 0}, SceneTag));
 
     for &(x, y, _dx, _dy, radius, color) in balls {
         world.spawn((
@@ -114,10 +102,10 @@ fn spawn_level(world: &mut World, level: u32) {
         ));
     }
 
-    //spawn Airship
-    world.spawn((
-        Position { x: 0.0 + offset.0 , y: 0.0 + offset.1},
-        Velocity { dx: 2.0, dy: 1.0 },
+    //spawn spacecraft
+   world.spawn((
+        Position { x: 0.0 + offset.0 , y: 460.0 + offset.1},
+        Velocity { dx: 140.0, dy: 0.0 },
         GameObject::Airship,
         Geometry::Circle(1.0),
         Weight { weight: 1.0 },
@@ -125,19 +113,25 @@ fn spawn_level(world: &mut World, level: u32) {
         CollideTag{ other: None },
         Transformation {default: Mat2::from_angle(PI/2.0f32), transformation: Mat2::IDENTITY},
         SceneTag,
+        SpacecraftTag
     ));
 
     //spawn Target
     world.spawn((
-        Position { x: 500.0 + offset.0, y: 500.0 + offset.1},
+        Position { x: 1800.0 + offset.0, y: 460.0 + offset.1},
         GameObject::Target,
         Geometry::Circle(100.0),
         Sprite { sheet_name: "player".to_string(), scale: 0.5 },
         Weight { weight: 0.0 },
         CollideTag{ other: None },
-        SceneTag,
+        SceneTag
     ));
 
     // debug
     world.spawn((DebugTag { print_geometry: false },));
+
+    world.spawn((LevelManager {
+        state : LevelState::Running,
+        density: 50.0
+    },));
 }

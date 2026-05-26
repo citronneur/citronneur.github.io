@@ -4,7 +4,7 @@ use macroquad::prelude::*;
 use crate::components::{BlackHole, Position, Weight};
 use crate::scene::SceneTag;
 
-const WEIGHT_RATE: f32 = 15.0;  // units of weight per second held
+const WEIGHT_RATE: f32 = 50.0;  // units of weight per second held
 const WEIGHT_MIN:  f32 = 1.0;   // minimum even for a quick tap
 
 pub fn system_blackhole(world: &mut World, dt: f32) {
