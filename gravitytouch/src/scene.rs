@@ -2,7 +2,7 @@ use std::f32::consts::PI;
 use hecs::World;
 use macroquad::prelude::*;
 
-use crate::components::{CollideTag, DebugTag, GameObject, Geometry, LevelManager, LevelState, PhysicsClock, Position, SpacecraftTag, Sprite, Transformation, Velocity, Weight};
+use crate::components::{CollideTag, DebugTag, GameObject, Geometry, LevelManager, LevelState, PhysicsClock, Position, SpacecraftTag, Sprite, TargetTag, Transformation, Velocity, Weight};
 
 #[derive(Clone)]
 pub enum SceneKind {
@@ -93,7 +93,7 @@ fn spawn_level(world: &mut World) {
             Position { x : x + offset.0, y : y + offset.1},
             Velocity { dx: 0.0, dy: 0.0 },
             GameObject::Asteroid,
-            Geometry::Circle(radius),
+            Geometry::Circle(10.0),
             Weight { weight: 2.0 },
             Sprite { sheet_name: "asteroid".to_string(), scale: 0.05 },
             Transformation {default: Mat2::from_angle(PI/2.0f32), transformation: Mat2::IDENTITY},
@@ -107,7 +107,7 @@ fn spawn_level(world: &mut World) {
         Position { x: 10.0 + offset.0 , y: 230.0 + offset.1},
         Velocity { dx: 140.0, dy: 0.0 },
         GameObject::Airship,
-        Geometry::Circle(1.0),
+        Geometry::Rectangle(12.0, 50.0),
         Weight { weight: 1.0 },
         Sprite { sheet_name: "spaceship".to_string(), scale: 0.07 },
         CollideTag{ other: None },
@@ -120,11 +120,12 @@ fn spawn_level(world: &mut World) {
     world.spawn((
         Position { x: 990.0 + offset.0, y: 230.0 + offset.1},
         GameObject::Target,
-        Geometry::Circle(100.0),
+        Geometry::Rectangle(300.0, 135.0),
         Sprite { sheet_name: "player".to_string(), scale: 0.5 },
         Weight { weight: 0.0 },
         CollideTag{ other: None },
-        SceneTag
+        SceneTag,
+        TargetTag
     ));
 
     // debug
@@ -133,5 +134,5 @@ fn spawn_level(world: &mut World) {
     world.spawn((LevelManager {
         state : LevelState::Running,
         density: 50.0
-    },));
+    }, SceneTag));
 }

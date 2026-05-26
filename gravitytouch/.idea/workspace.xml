@@ -9,12 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e99a1f99-7568-4c9a-b8d6-7818b5eb577b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/components.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scene.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/scene.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/systems/level.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/level.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/wasm32-unknown-unknown/release/hello_ecs.wasm" beforeDir="false" afterPath="$PROJECT_DIR$/target/wasm32-unknown-unknown/release/hello_ecs.wasm" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,11 +140,6 @@
           <url>file://$PROJECT_DIR$/src/systems/sprite_render.rs</url>
           <line>61</line>
           <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/systems/level.rs</url>
-          <line>97</line>
-          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

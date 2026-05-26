@@ -5,7 +5,7 @@ use macroquad::color::Color;
 use macroquad::math::Mat2;
 use macroquad::prelude::{screen_height, screen_width};
 use crate::assets::AssetManager;
-use crate::components::{BlackHole, CollideTag, GameObject, Geometry, LevelManager, LevelState, PhysicsClock, Position, SpacecraftTag, Sprite, Transformation, Velocity, Weight};
+use crate::components::{BlackHole, CollideTag, GameObject, Geometry, LevelManager, LevelState, PhysicsClock, Position, SpacecraftTag, Sprite, TargetTag, Transformation, Velocity, Weight};
 use crate::scene::SceneTag;
 use crate::systems::audio::system_audio;
 use crate::systems::blackhole::system_blackhole;
@@ -83,7 +83,17 @@ fn system_level_running(world: &mut World, assets: &AssetManager, sound: &Sound,
 fn system_level_translating(world: &mut World, assets: &AssetManager, bh_renderer: &mut Option<BlackHoleRenderer>) {
     let mut  is_end_translating = false;
 
-    let mut space_craft_pos = {
+    let mut target_pos = {
+        let q = world.query_mut::<(&Position, &TargetTag)>();
+        if let Some((_, (pos, _))) = q.into_iter().next() {
+            pos.clone()
+        }
+        else {
+            panic!("Target not found")
+        }
+    };
+
+    let mut spacecraft_pos = {
         let q = world.query_mut::<(&Position, &SpacecraftTag)>();
         if let Some((_, (pos, _))) = q.into_iter().next() {
             pos.clone()
@@ -96,16 +106,22 @@ fn system_level_translating(world: &mut World, assets: &AssetManager, bh_rendere
     let sh = screen_height();
     let offset = Position { x: (sw - 1024.0)/2.0, y: (sh - 460.0) / 2.0};
     let origin = Position { x : 50.0 + offset.x, y : 230.0 + offset.y};
-    let mut direction = Position { x :  origin.x - space_craft_pos.x , y : origin.y - space_craft_pos.y};
-    let norm = (direction.x * direction.x + direction.y * direction.y).sqrt();
-    direction.x = direction.x / norm;
-    direction.y = direction.y / norm;
+
+    let mut intesity_vector = Position { x :  spacecraft_pos.x - target_pos.x , y : spacecraft_pos.y - target_pos.y};
+    let intensity = (intesity_vector.x * intesity_vector.x + intesity_vector.y * intesity_vector.y).sqrt();
 
     for (_, (pos, vel, obj)) in world.query_mut::<(&mut Position, &mut Velocity, &GameObject)>() {
-        pos.x += direction.x * 300.0_f32.powf(norm / 2024.0 + 0.1);
-        pos.y += direction.y * 300.0_f32.powf(norm / 2024.0 + 0.1);
-        if *obj == GameObject::Airship && (pos.x < origin.x + 10.0) {
-            is_end_translating = true;
+        let mut direction = Position { x :  pos.x - target_pos.x , y : pos.y - target_pos.y};
+        let norm = (direction.x * direction.x + direction.y * direction.y).sqrt();
+        direction.x = direction.x / norm;
+        direction.y = direction.y / norm;
+
+        pos.x += direction.x * 300.0_f32.powf(intensity / 2024.0 + 0.1);
+        pos.y += direction.y * 300.0_f32.powf(intensity / 2024.0 + 0.1);
+        if *obj == GameObject::Airship {
+            if (pos.x < origin.x + 50.0 || pos.x > origin.x + 1024.0) {
+                is_end_translating = true;
+            }
         }
     }
 
