@@ -29,6 +29,7 @@ pub enum GameObject {
 #[derive(Clone)]
 pub enum Geometry {
     Circle(f32),
+    Rectangle(f32, f32),
 }
 
 #[derive(Clone)]
@@ -86,3 +87,4 @@ pub struct LevelManager {
 }
 
 pub struct SpacecraftTag;
+pub struct TargetTag;

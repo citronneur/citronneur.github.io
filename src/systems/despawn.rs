@@ -14,6 +14,9 @@ pub fn system_despawn(world: &mut World) {
             let outside = match geo {
                 Geometry::Circle(r) => {
                     pos.x + r < 0.0 || pos.x - r > sw || pos.y + r < 0.0 || pos.y - r > sh
+                },
+                Geometry::Rectangle(w, h) => {
+                    false
                 }
             };
             outside.then_some(entity)
