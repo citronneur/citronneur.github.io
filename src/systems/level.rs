@@ -6,7 +6,7 @@ use macroquad::math::Mat2;
 use macroquad::prelude::{screen_height, screen_width};
 use crate::assets::AssetManager;
 use crate::components::{BlackHole, CollideTag, GameObject, Geometry, LevelManager, LevelState, PhysicsClock, Position, SpacecraftTag, Sprite, TargetTag, Transformation, Velocity, Weight};
-use crate::scene::SceneTag;
+use crate::scene::{get_screen_offset, SceneTag};
 use crate::systems::audio::system_audio;
 use crate::systems::blackhole::system_blackhole;
 use crate::systems::collision::system_collide;
@@ -102,16 +102,15 @@ fn system_level_translating(world: &mut World, assets: &AssetManager, bh_rendere
             panic!("Target not found")
         }
     };
-    let sw = screen_width();
-    let sh = screen_height();
-    let offset = Position { x: (sw - 1024.0)/2.0, y: (sh - 460.0) / 2.0};
+
+    let offset = get_screen_offset();
     let origin = Position { x : 50.0 + offset.x, y : 230.0 + offset.y};
 
-    let mut intesity_vector = Position { x :  spacecraft_pos.x - target_pos.x , y : spacecraft_pos.y - target_pos.y};
-    let intensity = (intesity_vector.x * intesity_vector.x + intesity_vector.y * intesity_vector.y).sqrt();
+    let mut intensity_vector = Position { x :  spacecraft_pos.x - target_pos.x, y : spacecraft_pos.y - target_pos.y};
+    let intensity = (intensity_vector.x * intensity_vector.x + intensity_vector.y * intensity_vector.y).sqrt();
 
     for (_, (pos, vel, obj)) in world.query_mut::<(&mut Position, &mut Velocity, &GameObject)>() {
-        let mut direction = Position { x :  pos.x - target_pos.x , y : pos.y - target_pos.y};
+        let mut direction = Position { x :  pos.x - target_pos.x - 150.0, y : pos.y - target_pos.y};
         let norm = (direction.x * direction.x + direction.y * direction.y).sqrt();
         direction.x = direction.x / norm;
         direction.y = direction.y / norm;
